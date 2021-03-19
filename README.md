@@ -3,7 +3,7 @@
 HelloWorld [demo](https://www.lwjgl.org/guide) for LWJGL 3,
 compiled to native executable by GraalVM native-image utility.
 
-	![screenshot](HelloWorld.jpg)
+	[screenshot](HelloWorld.jpg)
 
 Gradle/Maven wrappers & build scripts are provided for building the project,
 which requires JDK 11+ or GraalVM 21+ (for native image).
