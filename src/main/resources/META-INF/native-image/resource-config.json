@@ -1,6 +1,7 @@
 {
   "resources":{
   "includes":[
+    {"pattern":"\\QMETA-INF/MANIFEST.MF\\E"}, 
     {"pattern":"\\Qlinux/x64/org/lwjgl/assimp/libassimp.so\\E"}, 
     {"pattern":"\\Qlinux/x64/org/lwjgl/glfw/libglfw.so\\E"}, 
     {"pattern":"\\Qlinux/x64/org/lwjgl/glfw/libglfw_wayland.so\\E"}, 

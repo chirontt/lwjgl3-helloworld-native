@@ -3,13 +3,20 @@ package com.github.chirontt.lwjgl.graalvm;
 import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.system.Pointer.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
-import org.lwjgl.Version;
-import org.lwjgl.Version.BuildType;
+import org.lwjgl.system.APIUtil;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.RecomputeFieldValue;
@@ -17,24 +24,57 @@ import com.oracle.svm.core.annotate.RecomputeFieldValue.Kind;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
 
-@TargetClass(org.lwjgl.Version.class)
-final class Target_org_lwjgl_Version {
-    
-    @Alias
-    @RecomputeFieldValue(kind = Kind.FromAlias, isFinal = true)
-    public static int VERSION_MAJOR, VERSION_MINOR, VERSION_REVISION;
+@TargetClass(org.lwjgl.system.APIUtil.class)
+final class Target_org_lwjgl_system_APIUtil {
 
     @Alias
     @RecomputeFieldValue(kind = Kind.FromAlias, isFinal = true)
-    public static BuildType BUILD_TYPE;
+    public static PrintStream DEBUG_STREAM;
 
     @Substitute
-    public static String getVersion() {
-        String implVersion = Version.class.getPackage().getImplementationVersion();
-        return String.valueOf(VERSION_MAJOR) +
-                '.' + VERSION_MINOR +
-                '.' + VERSION_REVISION + BUILD_TYPE.postfix +
-                ' ' + Optional.ofNullable(implVersion).orElse("SNAPSHOT");
+    public static Optional<String> apiGetManifestValue(String attributeName) {
+        if (attributeName == null || attributeName.isEmpty()) return Optional.empty();
+
+        Package currentPackage = APIUtil.class.getPackage();
+        String manifestValue = null;
+        switch (attributeName.toLowerCase()) {
+            case "implementation-title":
+                manifestValue = currentPackage.getImplementationTitle();
+                return Optional.ofNullable(manifestValue);
+            case "implementation-vendor":
+                manifestValue = currentPackage.getImplementationVendor();
+                return Optional.ofNullable(manifestValue);
+            case "implementation-version":
+                manifestValue = currentPackage.getImplementationVersion();
+                return Optional.ofNullable(manifestValue);
+            case "specification-title":
+                manifestValue = currentPackage.getSpecificationTitle();
+                return Optional.ofNullable(manifestValue);
+            case "specification-vendor":
+                manifestValue = currentPackage.getSpecificationVendor();
+                return Optional.ofNullable(manifestValue);
+            case "specification-version":
+                manifestValue = currentPackage.getSpecificationVersion();
+                return Optional.ofNullable(manifestValue);
+            default:
+                ClassLoader loader = APIUtil.class.getClassLoader();
+                try {
+                    //find a MANIFEST.MF resource from one of the LWJGL jars
+                    for (Enumeration<URL> e = loader.getResources(JarFile.MANIFEST_NAME); e.hasMoreElements(); ) {
+                        URL url = e.nextElement();
+                        try (InputStream stream = url.openStream()) {
+                            Attributes attributes = new Manifest(stream).getMainAttributes();
+                            //is this manifest resource from LWJGL?
+                            if ("lwjgl.org".equals(attributes.getValue("Implementation-Vendor")))
+                                return Optional.ofNullable(attributes.getValue(attributeName));
+                        }
+                    }
+                } catch (IOException ioe) {
+                    ioe.printStackTrace(DEBUG_STREAM);
+                }
+
+                return Optional.empty();
+        }
     }
 }
 
