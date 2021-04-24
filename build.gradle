@@ -1,6 +1,7 @@
 plugins {
     id 'application'
-    id 'com.gluonhq.client-gradle-plugin' version '0.1.36'  //requires GraalVM 21+
+    id 'org.openjfx.javafxplugin' version '0.0.9'  //requires JDK11+
+    id 'com.gluonhq.client-gradle-plugin' version '0.1.39'  //requires GraalVM 21.1+
 }
 
 wrapper {
@@ -14,7 +15,7 @@ description = 'LWJGL3 HelloWorld demo with native image by GraalVM'
 
 ext {
     lwjglVersion = '3.2.3'
-    graalvmVersion = '21.0.0.2'
+    graalvmVersion = '21.1.0'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']

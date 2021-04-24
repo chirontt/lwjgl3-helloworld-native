@@ -36,26 +36,19 @@ final class Target_org_lwjgl_system_APIUtil {
         if (attributeName == null || attributeName.isEmpty()) return Optional.empty();
 
         Package currentPackage = APIUtil.class.getPackage();
-        String manifestValue = null;
         switch (attributeName.toLowerCase()) {
             case "implementation-title":
-                manifestValue = currentPackage.getImplementationTitle();
-                return Optional.ofNullable(manifestValue);
+                return Optional.ofNullable(currentPackage.getImplementationTitle());
             case "implementation-vendor":
-                manifestValue = currentPackage.getImplementationVendor();
-                return Optional.ofNullable(manifestValue);
+                return Optional.ofNullable(currentPackage.getImplementationVendor());
             case "implementation-version":
-                manifestValue = currentPackage.getImplementationVersion();
-                return Optional.ofNullable(manifestValue);
+                return Optional.ofNullable(currentPackage.getImplementationVersion());
             case "specification-title":
-                manifestValue = currentPackage.getSpecificationTitle();
-                return Optional.ofNullable(manifestValue);
+                return Optional.ofNullable(currentPackage.getSpecificationTitle());
             case "specification-vendor":
-                manifestValue = currentPackage.getSpecificationVendor();
-                return Optional.ofNullable(manifestValue);
+                return Optional.ofNullable(currentPackage.getSpecificationVendor());
             case "specification-version":
-                manifestValue = currentPackage.getSpecificationVersion();
-                return Optional.ofNullable(manifestValue);
+                return Optional.ofNullable(currentPackage.getSpecificationVersion());
             default:
                 ClassLoader loader = APIUtil.class.getClassLoader();
                 try {
