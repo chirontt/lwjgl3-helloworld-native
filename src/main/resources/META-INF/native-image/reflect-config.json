@@ -72,20 +72,20 @@
 {
   "name":"org.lwjgl.system.CustomBuffer",
   "fields":[
-    {"name":"capacity", "allowUnsafeAccess":true}, 
-    {"name":"container", "allowUnsafeAccess":true}, 
-    {"name":"limit", "allowUnsafeAccess":true}, 
-    {"name":"mark", "allowUnsafeAccess":true}, 
-    {"name":"position", "allowUnsafeAccess":true}
+    {"name":"capacity"}, 
+    {"name":"container"}, 
+    {"name":"limit"}, 
+    {"name":"mark"}, 
+    {"name":"position"}
   ]
 },
 {
   "name":"org.lwjgl.system.Pointer$Default",
-  "fields":[{"name":"address", "allowUnsafeAccess":true}]
+  "fields":[{"name":"address"}]
 },
 {
   "name":"org.lwjgl.system.Struct",
-  "fields":[{"name":"container", "allowUnsafeAccess":true}]
+  "fields":[{"name":"container"}]
 },
 {
   "name":"sun.misc.Unsafe",

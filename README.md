@@ -17,16 +17,8 @@ shows how to set up GraalVM and its native-image utility for common platforms.
 [Gluon](https://gluonhq.com/) also provides some setup
 [details](https://docs.gluonhq.com/#_platforms) for GraalVM native-image creation.
 
-This project's Gradle build script uses the
-[client-gradle-plugin](https://github.com/gluonhq/client-gradle-plugin)
-from Gluon to build the native executable from Gradle with GraalVM.
-
 The GraalVM native-image utility will use the configuration files in
 `src/main/resources/META-INF/native-image` folder to assist in the native-image generation.
-
-Gluon also provides the [client-maven-plugin](https://github.com/gluonhq/client-maven-plugin)
-which is used in this project's Maven build script and works similarly to the above
-client-gradle-plugin.
 
 ## Gradle build tasks
 
@@ -44,34 +36,34 @@ The above tasks can use any standard JDK 11+.
 To generate native executable, GraalVM 21+ need be set up as mentioned in
 *GraalVM pre-requisites* section above.
 
-Once GraalVM is set up and available in the path, run the `nativeBuild` task:
+Once GraalVM is set up and available in the path, run the `nativeImage` task:
 
-	gradlew nativeBuild
+	gradlew nativeImage
 
-The `nativeBuild` task would take a while to compile the demo source code and
+The `nativeImage` task would take a while to compile the demo source code and
 link them with the LWJGL libraries into an executable file.
 The resulting `lwjgl3-helloworld` executable file is:
 
-	build/client/x86_64-linux/lwjgl3-helloworld
+	build/native-image-linux/lwjgl3-helloworld
 
 (or if building on a Windows machine:
 
-	build\client\x86_64-windows\lwjgl3-helloworld.exe
+	build\native-image-windows\lwjgl3-helloworld.exe
 
 )
 
 which can then be run directly:
 
-	./build/client/x86_64-linux/lwjgl3-helloworld
+	./build/native-image-linux/lwjgl3-helloworld
 
 or, run it with relevant system properties to see some debug info in the console:
 
-	./build/client/x86_64-linux/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
+	./build/native-image-linux/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
 
 (or if building on a Windows machine:
 
-	build\client\x86_64-windows\lwjgl3-helloworld.exe
-	build\client\x86_64-windows\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
+	build\native-image-windows\lwjgl3-helloworld.exe
+	build\native-image-windows\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
 
 )
 
@@ -93,34 +85,34 @@ The above tasks can use any standard JDK 11+.
 To generate native executable, GraalVM 21+ need be set up as mentioned in
 *GraalVM pre-requisites* section above.
 
-Once GraalVM is set up and available in the path, run the `client:build` task:
+Once GraalVM is set up and available in the path, run the `package` task:
 
-	mvnw client:build
+	mvnw package
 
-The `client:build` task would take a while to compile the demo source code and
+The `package` task would take a while to compile the demo source code and
 link them with the LWJGL libraries into an executable file.
 The resulting `lwjgl3-helloworld` executable file is:
 
-	target/client/x86_64-linux/lwjgl3-helloworld
+	target/native-image-linux/lwjgl3-helloworld
 
 (or if building on a Windows machine:
 
-	target\client\x86_64-windows\lwjgl3-helloworld.exe
+	target\native-image-windows\lwjgl3-helloworld.exe
 
 )
 
 which can then be run directly:
 
-	./target/client/x86_64-linux/lwjgl3-helloworld
+	./target/native-image-linux/lwjgl3-helloworld
 
 or, run it with relevant system properties to see some debug info in the console:
 
-	./target/client/x86_64-linux/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
+	./target/native-image-linux/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
 
 (or if building on a Windows machine:
 
-	target\client\x86_64-windows\lwjgl3-helloworld.exe
-	target\client\x86_64-windows\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
+	target\native-image-windows\lwjgl3-helloworld.exe
+	target\native-image-windows\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
 
 )
 
@@ -131,5 +123,5 @@ can be further reduced in size via compression using the [UPX](https://upx.githu
 as described [here](https://medium.com/graalvm/compressed-graalvm-native-images-4d233766a214).
 
 For example, the resulting `lwjgl3-helloworld.exe` native application file produced in Windows
-is normally 58MB in size, but is compressed to 15MB with the UPX command: `upx --best lwjgl3-helloworld.exe`
+is normally 35MB in size, but is compressed to 10MB with the UPX command: `upx --best lwjgl3-helloworld.exe`
 
