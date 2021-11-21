@@ -11,8 +11,8 @@
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <lwjgl.version>3.2.3</lwjgl.version>
-        <native.maven.plugin.version>0.9.2</native.maven.plugin.version>
-        <graalvm.version>21.2.0</graalvm.version>
+        <native.maven.plugin.version>0.9.7.1</native.maven.plugin.version>
+        <graalvm.version>21.3.0</graalvm.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
@@ -121,7 +121,7 @@
                     <skip>false</skip>
                 </configuration>
             </plugin>
-            <!-- remove unneeded .dll files -->
+            <!-- remove unneeded .dll/.txt files -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -143,6 +143,8 @@
                                 <include name="*.txt"/>
                             </fileset>
                         </move>
+                        <move file="${project.build.directory}/${native.image.dir.name}/reports"
+                              tofile="${project.build.directory}/tmp/${native.image.dir.name}/reports"/>
                     </target>
                 </configuration>
             </plugin>

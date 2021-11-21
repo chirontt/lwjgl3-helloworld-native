@@ -3,8 +3,8 @@ plugins {
     id 'org.mikeneck.graalvm-native-image' version '1.4.1'
 }
 
-wrapper {
-    gradleVersion = '7.1.1'
+tasks.wrapper {
+    gradleVersion = '7.3'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -14,7 +14,7 @@ version = '0.0.1-SNAPSHOT'
 
 ext {
     lwjglVersion = '3.2.3'
-    graalvmVersion = '21.2.0'
+    graalvmVersion = '21.3.0'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']
@@ -81,7 +81,7 @@ run {
     jvmArgs = ["-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image"]
 }
 
-//remove unneeded .dll files
+//remove unneeded .dll/.txt files
 task removeUnneededDllFiles {
     doLast {
         ant.move(todir: "$buildDir/tmp/$nativeImageDirName") {
@@ -90,6 +90,8 @@ task removeUnneededDllFiles {
                 include name: '*.txt'
             }
         }
+        ant.move(file: "$buildDir/$nativeImageDirName/reports",
+                 tofile: "$buildDir/tmp/$nativeImageDirName/reports")
     }
 }
 
