@@ -1,0 +1,62 @@
+name: Maven native image build
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} with Java ${{ matrix.java-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        java-version: [11, 17]
+      fail-fast: false
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - name: Set up GraalVM for Java ${{ matrix.java-version }}
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: '22.0.0.2'
+          java-version: ${{ matrix.java-version }}
+          components: 'native-image'
+
+      - name: Report Java version
+        run: |
+          java -version
+          javac -version
+
+      - name: Build with Maven Wrapper (Linux and MacOS)
+        run: ./mvnw -B package
+        if: runner.os != 'Windows'
+
+      - name: Build with Maven Wrapper (Windows)
+        run: .\mvnw.cmd -B package
+        if: runner.os == 'Windows'
+
+      - name: Package Linux artifact
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v2
+        with:
+          name: lwjgl3-helloworld ${{ runner.os }} native image
+          path: target/native-image-linux/lwjgl3-helloworld**
+
+      - name: Package MacOS artifact
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v2
+        with:
+          name: lwjgl3-helloworld ${{ runner.os }} native image
+          path: target/native-image-macos/lwjgl3-helloworld*
+
+      - name: Package Windows artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v2
+        with:
+          name: lwjgl3-helloworld ${{ runner.os }} native image
+          path: target/native-image-windows/lwjgl3-helloworld.exe
+

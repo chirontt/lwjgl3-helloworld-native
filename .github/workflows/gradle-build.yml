@@ -1,4 +1,4 @@
-name: Build
+name: Gradle native image build
 
 on:
   push:
@@ -16,13 +16,23 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Checkout
+      - name: Git checkout
         uses: actions/checkout@v2
+
+      - name: Verify Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle-
 
       - name: Set up GraalVM for Java ${{ matrix.java-version }}
         uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
+          version: '22.0.0.2'
           java-version: ${{ matrix.java-version }}
           components: 'native-image'
 
@@ -31,11 +41,11 @@ jobs:
           java -version
           javac -version
 
-      - name: Build with Maven Wrapper (not on Windows)
-        run: ./mvnw -B package
+      - name: Build with Gradle Wrapper (Linux and MacOS)
+        run: ./gradlew --no-daemon --info nativeCompile
         if: runner.os != 'Windows'
 
-      - name: Build with Maven Wrapper on Windows
-        run: .\mvnw.cmd -B package
+      - name: Build with Gradle Wrapper (Windows)
+        run: .\gradlew.bat --no-daemon --info nativeCompile
         if: runner.os == 'Windows'
 
