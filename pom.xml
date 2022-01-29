@@ -12,8 +12,8 @@
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <lwjgl.version>3.3.0</lwjgl.version>
-        <native.maven.plugin.version>0.9.7.1</native.maven.plugin.version>
-        <graalvm.version>21.3.0</graalvm.version>
+        <native.maven.plugin.version>0.9.9</native.maven.plugin.version>
+        <graalvm.version>22.0.0.2</graalvm.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
@@ -23,24 +23,15 @@
     </properties>
     <name>lwjgl3-helloworld</name> <!-- name of the resulting native executable -->
     <description>LWJGL3 HelloWorld demo with native image by GraalVM</description>
-    <!-- detect the current OS (assuming 64-bit, on Intel/AMD hardware) -->
+
     <profiles>
+        <!-- profiles based on OS platforms (64-bit architectures only) -->
         <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <platform>windows</platform>
-            </properties>
-        </profile>
-        <profile>
-            <id>linux</id>
+            <id>linux-amd64</id>
             <activation>
                 <os>
                     <family>Linux</family>
+                    <arch>amd64</arch>
                 </os>
             </activation>
             <properties>
@@ -48,17 +39,67 @@
             </properties>
         </profile>
         <profile>
-            <id>mac</id>
+            <id>linux-arm64</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <properties>
+                <platform>linux-arm64</platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>mac-amd64</id>
             <activation>
                 <os>
                     <family>Mac</family>
+                    <arch>amd64</arch>
                 </os>
             </activation>
             <properties>
                 <platform>macos</platform>
             </properties>
         </profile>
+        <profile>
+            <id>mac-arm64</id>
+            <activation>
+                <os>
+                    <family>Mac</family>
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <properties>
+                <platform>macos-arm64</platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows-amd64</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <platform>windows</platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>windows-arm64</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <properties>
+                <platform>windows-arm64</platform>
+            </properties>
+        </profile>
     </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -233,12 +274,14 @@
                             </fileset>
                         </move>
                         <move file="${project.build.directory}/${native.image.dir.name}/reports"
-                              tofile="${project.build.directory}/tmp/${native.image.dir.name}/reports"/>
+                              tofile="${project.build.directory}/tmp/${native.image.dir.name}/reports"
+                              failonerror="false" quiet="true"/>
                     </target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
     <dependencyManagement>
         <dependencies>
             <!-- get recommended dependency versions from the LWJGL BOM -->

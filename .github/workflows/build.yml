@@ -1,0 +1,41 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} with Java ${{ matrix.java-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        java-version: [11, 17]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up GraalVM for Java ${{ matrix.java-version }}
+        uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: ${{ matrix.java-version }}
+          components: 'native-image'
+
+      - name: Report Java version
+        run: |
+          java -version
+          javac -version
+
+      - name: Build with Maven Wrapper
+        run: ./mvnw -B package
+        if: runner.os != 'Windows'
+
+      - name: Build with Maven Wrapper on Windows
+        run: .\mvnw.cmd -B package
+        if: runner.os == 'Windows'
+

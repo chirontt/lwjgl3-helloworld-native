@@ -1,10 +1,11 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.9.7.1'
+    id 'org.graalvm.buildtools.native' version '0.9.9'
+    id 'com.google.osdetector' version '1.7.0'
 }
 
 tasks.wrapper {
-    gradleVersion = '7.3'
+    gradleVersion = '7.3.3'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -12,9 +13,31 @@ group = 'com.github.chirontt.lwjgl'
 description = 'LWJGL3 HelloWorld demo with native image by GraalVM'
 version = '0.0.1-SNAPSHOT'
 
+//returns the <os>-<arch> platform string suitable for retrieval of LWJGL natives
+//(if <arch> is blank, it implies "x86_64")
+def getCurrentPlatform() {
+    def os = osdetector.os
+    def lwjglOS = os == 'linux' ? 'linux' :
+                  os == 'osx' ? 'macos' :
+                  os == 'windows' ? 'windows' :
+                  'unknown'
+    if (lwjglOS == 'unknown')
+        throw new GradleException('Unsupported OS: ' + os)
+
+    def arch = osdetector.arch
+    //consider 64-bit architectures only
+    def lwjglArch = arch == 'x86_64' ? '' :
+                    arch == 'aarch_64' ? 'arm64' :
+                    'unknown'
+    if (lwjglArch == 'unknown')
+        throw new GradleException('Unsupported Architecture: ' + arch)
+
+    return (lwjglArch == '' ? lwjglOS : (lwjglOS + '-' + lwjglArch))
+}
+
 ext {
     lwjglVersion = '3.3.0'
-    graalvmVersion = '21.3.0'
+    graalvmVersion = '22.0.0.2'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']
@@ -27,15 +50,6 @@ ext {
 repositories {
     mavenCentral()
     mavenLocal()
-}
-
-//detect the OS (assuming 64-bit, on Intel/AMD hardware)
-private static String getCurrentPlatform() {
-    def currentOS = org.gradle.internal.os.OperatingSystem.current()
-    return currentOS.isLinux() ? 'linux' :
-           currentOS.isMacOsX() ? 'macos' :
-           currentOS.isWindows() ? 'windows' :
-           'unknown'
 }
 
 dependencies {
@@ -126,8 +140,10 @@ task removeUnneededDllFiles {
                 include name: '*.txt'
             }
         }
-        ant.move(file: "$buildDir/$nativeImageDirName/reports",
-                 tofile: "$buildDir/tmp/$nativeImageDirName/reports")
+        if (file("$buildDir/$nativeImageDirName/reports").exists()) {
+            ant.move(file: "$buildDir/$nativeImageDirName/reports",
+                     tofile: "$buildDir/tmp/$nativeImageDirName/reports")
+        }
         if (file("$buildDir/$nativeImageDirName/sources").exists()) {
             ant.move(file: "$buildDir/$nativeImageDirName/sources",
                      tofile: "$buildDir/tmp/$nativeImageDirName/sources")
@@ -148,6 +164,7 @@ graalvmNative {
             buildArgs.add('--native-image-info')
             buildArgs.add("-H:Path=$buildDir/$nativeImageDirName")
             buildArgs.add("-H:TempDirectory=$buildDir/tmp/$nativeImageDirName")
+            //buildArgs.add('-H:+TraceNativeToolUsage')
 
             useFatJar = false
         }

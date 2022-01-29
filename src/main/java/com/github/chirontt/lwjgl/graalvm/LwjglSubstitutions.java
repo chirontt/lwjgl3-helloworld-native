@@ -8,9 +8,8 @@ import com.oracle.svm.core.annotate.RecomputeFieldValue;
 import com.oracle.svm.core.annotate.RecomputeFieldValue.Kind;
 import com.oracle.svm.core.annotate.Substitute;
 import com.oracle.svm.core.annotate.TargetClass;
-import com.oracle.svm.core.jdk.JDK11To16;
 
-@TargetClass(className = "org.lwjgl.system.ThreadLocalUtil", onlyWith = JDK11To16.class)
+@TargetClass(org.lwjgl.system.ThreadLocalUtil.class)
 final class Target_org_lwjgl_system_ThreadLocalUtil {
 
     @Alias

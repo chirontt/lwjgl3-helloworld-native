@@ -2,6 +2,24 @@
   "resources":{
   "includes":[
     {
+      "pattern":"\\Qlinux/arm64/org/lwjgl/assimp/libassimp.so\\E"
+    }, 
+    {
+      "pattern":"\\Qlinux/arm64/org/lwjgl/glfw/libglfw.so\\E"
+    }, 
+    {
+      "pattern":"\\Qlinux/arm64/org/lwjgl/liblwjgl.so\\E"
+    }, 
+    {
+      "pattern":"\\Qlinux/arm64/org/lwjgl/openal/libopenal.so\\E"
+    }, 
+    {
+      "pattern":"\\Qlinux/arm64/org/lwjgl/opengl/liblwjgl_opengl.so\\E"
+    }, 
+    {
+      "pattern":"\\Qlinux/arm64/org/lwjgl/stb/liblwjgl_stb.so\\E"
+    }, 
+    {
       "pattern":"\\Qlinux/x64/org/lwjgl/assimp/libassimp.so\\E"
     }, 
     {
@@ -20,6 +38,24 @@
       "pattern":"\\Qlinux/x64/org/lwjgl/stb/liblwjgl_stb.so\\E"
     }, 
     {
+      "pattern":"\\Qmacos/arm64/org/lwjgl/assimp/libassimp.dylib\\E"
+    }, 
+    {
+      "pattern":"\\Qmacos/arm64/org/lwjgl/glfw/libglfw.dylib\\E"
+    }, 
+    {
+      "pattern":"\\Qmacos/arm64/org/lwjgl/liblwjgl.dylib\\E"
+    }, 
+    {
+      "pattern":"\\Qmacos/arm64/org/lwjgl/openal/libopenal.dylib\\E"
+    }, 
+    {
+      "pattern":"\\Qmacos/arm64/org/lwjgl/opengl/liblwjgl_opengl.dylib\\E"
+    }, 
+    {
+      "pattern":"\\Qmacos/arm64/org/lwjgl/stb/liblwjgl_stb.dylib\\E"
+    }, 
+    {
       "pattern":"\\Qmacos/x64/org/lwjgl/assimp/libassimp.dylib\\E"
     }, 
     {
@@ -36,6 +72,24 @@
     }, 
     {
       "pattern":"\\Qmacos/x64/org/lwjgl/stb/liblwjgl_stb.dylib\\E"
+    }, 
+    {
+      "pattern":"\\Qwindows/arm64/org/lwjgl/assimp/assimp.dll\\E"
+    }, 
+    {
+      "pattern":"\\Qwindows/arm64/org/lwjgl/glfw/glfw.dll\\E"
+    }, 
+    {
+      "pattern":"\\Qwindows/arm64/org/lwjgl/lwjgl.dll\\E"
+    }, 
+    {
+      "pattern":"\\Qwindows/arm64/org/lwjgl/openal/OpenAL.dll\\E"
+    }, 
+    {
+      "pattern":"\\Qwindows/arm64/org/lwjgl/opengl/lwjgl_opengl.dll\\E"
+    }, 
+    {
+      "pattern":"\\Qwindows/arm64/org/lwjgl/stb/lwjgl_stb.dll\\E"
     }, 
     {
       "pattern":"\\Qwindows/x64/org/lwjgl/assimp/assimp.dll\\E"
