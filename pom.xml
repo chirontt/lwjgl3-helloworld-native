@@ -55,7 +55,7 @@
             <activation>
                 <os>
                     <family>Mac</family>
-                    <arch>amd64</arch>
+                    <!-- <arch>amd64</arch> -->
                 </os>
             </activation>
             <properties>

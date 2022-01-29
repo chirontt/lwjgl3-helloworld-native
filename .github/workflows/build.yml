@@ -2,7 +2,6 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -14,6 +13,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
+      fail-fast: false
 
     steps:
       - name: Checkout
@@ -31,7 +31,7 @@ jobs:
           java -version
           javac -version
 
-      - name: Build with Maven Wrapper
+      - name: Build with Maven Wrapper (not on Windows)
         run: ./mvnw -B package
         if: runner.os != 'Windows'
 
