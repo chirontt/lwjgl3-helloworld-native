@@ -13,6 +13,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
+        graalvm-version: ['22.0.0.2']
       fail-fast: false
 
     steps:
@@ -32,7 +33,7 @@ jobs:
       - name: Set up GraalVM for Java ${{ matrix.java-version }}
         uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.0.0.2'
+          version: ${{ matrix.graalvm-version }}
           java-version: ${{ matrix.java-version }}
           components: 'native-image'
 

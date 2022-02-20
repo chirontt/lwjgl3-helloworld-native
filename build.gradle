@@ -1,11 +1,11 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.9.9'
+    id 'org.graalvm.buildtools.native' version '0.9.10'
     id 'com.google.osdetector' version '1.7.0'
 }
 
 tasks.wrapper {
-    gradleVersion = '7.3.3'
+    gradleVersion = '7.4'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -133,11 +133,13 @@ task uberJar(type: Jar) {
 //remove unneeded .dll/.txt files
 task removeUnneededDllFiles {
     doLast {
-        ant.move(todir: "$buildDir/tmp/$nativeImageDirName") {
-            fileset(dir: "$buildDir/$nativeImageDirName") {
-                include name: '*.dll'
-                include name: '*.pdb'
-                include name: '*.txt'
+        if (file("$buildDir/$nativeImageDirName").exists()) {
+            ant.move(todir: "$buildDir/tmp/$nativeImageDirName") {
+                fileset(dir: "$buildDir/$nativeImageDirName") {
+                    include name: '*.dll'
+                    include name: '*.pdb'
+                    include name: '*.txt'
+                }
             }
         }
         if (file("$buildDir/$nativeImageDirName/reports").exists()) {

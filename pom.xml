@@ -7,12 +7,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.plugin.version>3.9.0</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <lwjgl.version>3.3.0</lwjgl.version>
-        <native.maven.plugin.version>0.9.9</native.maven.plugin.version>
+        <native.maven.plugin.version>0.9.10</native.maven.plugin.version>
         <graalvm.version>22.0.0.2</graalvm.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
@@ -266,7 +265,8 @@
                                 <attribute name="Main-Class" value="${exec.mainClass}"/>
                             </manifest>
                         </jar>
-                        <move todir="${project.build.directory}/tmp/${native.image.dir.name}">
+                        <move todir="${project.build.directory}/tmp/${native.image.dir.name}"
+                              failonerror="false" quiet="true"/>
                             <fileset dir="${project.build.directory}/${native.image.dir.name}">
                                 <include name="*.dll"/>
                                 <include name="*.pdb"/>
