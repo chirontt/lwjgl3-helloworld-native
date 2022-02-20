@@ -266,7 +266,7 @@
                             </manifest>
                         </jar>
                         <move todir="${project.build.directory}/tmp/${native.image.dir.name}"
-                              failonerror="false" quiet="true"/>
+                              failonerror="false" quiet="true">
                             <fileset dir="${project.build.directory}/${native.image.dir.name}">
                                 <include name="*.dll"/>
                                 <include name="*.pdb"/>
