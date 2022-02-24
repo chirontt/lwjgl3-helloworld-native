@@ -14,10 +14,6 @@
   "name":"jdk.internal.loader.ClassLoaders$PlatformClassLoader"
 },
 {
-  "name":"org.graalvm.jniutils.JNIExceptionWrapperEntryPoints",
-  "methods":[{"name":"getClassName","parameterTypes":["java.lang.Class"] }]
-},
-{
   "name":"org.lwjgl.system.CallbackI",
   "methods":[{"name":"callback","parameterTypes":["long","long"] }]
 }
