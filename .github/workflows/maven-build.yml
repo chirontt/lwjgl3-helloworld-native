@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
-        graalvm-version: ['22.0.0.2']
+        graalvm-version: ['22.1.0']
       fail-fast: false
 
     steps:
@@ -33,11 +33,11 @@ jobs:
           javac -version
 
       - name: Build with Maven Wrapper (Linux and MacOS)
-        run: ./mvnw -B package
+        run: ./mvnw -V -B package
         if: runner.os != 'Windows'
 
       - name: Build with Maven Wrapper (Windows)
-        run: .\mvnw.cmd -B package
+        run: .\mvnw.cmd -V -B package
         if: runner.os == 'Windows'
 
       - name: Package Linux artifact
