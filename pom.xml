@@ -11,8 +11,8 @@
         <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <lwjgl.version>3.3.1</lwjgl.version>
-        <native.maven.plugin.version>0.9.11</native.maven.plugin.version>
-        <graalvm.version>22.1.0.1</graalvm.version>
+        <native.maven.plugin.version>0.9.13</native.maven.plugin.version>
+        <graalvm.version>22.2.0</graalvm.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
@@ -54,7 +54,7 @@
             <activation>
                 <os>
                     <family>Mac</family>
-                    <!-- <arch>amd64</arch> -->
+                    <arch>x86_64</arch>
                 </os>
             </activation>
             <properties>
@@ -229,9 +229,6 @@
                         <buildArg>-H:Path=${project.build.directory}/${native.image.dir.name}</buildArg>
                     </buildArgs>
                     <skip>false</skip>
-                    <!-- temp fix for the "Unsupported OptionOrigin" error in GraalVM 22.1.0 version in Windows
-                         (see https://github.com/oracle/graal/issues/4502) -->
-                    <useArgFile>false</useArgFile>
                     <!-- use the uber jar for native image compiling 
                          if long classpath is a problem in Windows
                     -->

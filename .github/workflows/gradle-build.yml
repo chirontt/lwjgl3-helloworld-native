@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
-        graalvm-version: ['22.1.0']
+        graalvm-version: ['22.2.0']
       fail-fast: false
 
     steps:
@@ -47,6 +47,8 @@ jobs:
         if: runner.os != 'Windows'
 
       - name: Build with Gradle Wrapper (Windows)
-        run: .\gradlew.bat --no-daemon --info nativeCompile
+        run: |
+          echo JAVA_HOME: %JAVA_HOME%
+          .\gradlew.bat --no-daemon --info nativeCompile
         if: runner.os == 'Windows'
 

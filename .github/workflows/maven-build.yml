@@ -13,7 +13,7 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
-        graalvm-version: ['22.1.0']
+        graalvm-version: ['22.2.0']
       fail-fast: false
 
     steps:
