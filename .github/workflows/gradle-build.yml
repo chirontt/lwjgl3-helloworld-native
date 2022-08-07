@@ -46,6 +46,12 @@ jobs:
         run: ./gradlew --no-daemon --info nativeCompile
         if: runner.os != 'Windows'
 
+      - name: Fix the svm.jar of GraalVM ${{ matrix.graalvm-version }} for JDK ${{ matrix.java-version }} (Windows)
+        run: |
+          copy lib\svm-${{matrix.graalvm-version}}-${{matrix.java-version}}-MODIFIED.jar $env:GRAALVM_HOME\lib\svm\builder\svm.jar
+          dir $env:GRAALVM_HOME\lib\svm\builder
+        if: runner.os == 'Windows'
+
       - name: Build with Gradle Wrapper (Windows)
         run: |
           echo JAVA_HOME: %JAVA_HOME%
