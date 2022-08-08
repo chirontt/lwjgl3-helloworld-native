@@ -46,6 +46,15 @@ jobs:
         run: .\mvnw.cmd -V -B package
         if: runner.os == 'Windows'
 
+      - name: Compress the generated Windows native executable using UPX
+        if: runner.os == 'Windows'
+        uses: crazy-max/ghaction-upx@v2
+        with:
+          version: latest
+          files: |
+            target\native-image-windows\*.exe
+          args: --best
+
       - name: Package Linux artifact
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v2
