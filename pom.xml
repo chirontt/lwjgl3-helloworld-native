@@ -11,7 +11,7 @@
         <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <lwjgl.version>3.3.1</lwjgl.version>
-        <native.maven.plugin.version>0.9.13</native.maven.plugin.version>
+        <native.maven.plugin.version>0.9.14</native.maven.plugin.version>
         <graalvm.version>22.2.0</graalvm.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
@@ -200,6 +200,7 @@
                 <groupId>org.graalvm.buildtools</groupId>
                 <artifactId>native-maven-plugin</artifactId>
                 <version>${native.maven.plugin.version}</version>
+                <extensions>true</extensions>
                 <executions>
                     <!-- execution>
                         <id>test-native</id>
@@ -211,7 +212,7 @@
                     <execution>
                         <phase>package</phase>
                         <goals>
-                            <goal>build</goal>
+                            <goal>compile-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
