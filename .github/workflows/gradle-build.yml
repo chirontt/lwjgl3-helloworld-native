@@ -13,18 +13,18 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
-        graalvm-version: ['22.2.0']
+        graalvm-version: ['22.3.0']
       fail-fast: false
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Verify Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
 
       - name: Cache Gradle packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
@@ -46,15 +46,7 @@ jobs:
         run: ./gradlew --no-daemon --info nativeCompile
         if: runner.os != 'Windows'
 
-      - name: Fix the svm.jar of GraalVM ${{ matrix.graalvm-version }} for JDK ${{ matrix.java-version }} (Windows)
-        run: |
-          copy lib\svm-${{matrix.graalvm-version}}-${{matrix.java-version}}-MODIFIED.jar $env:GRAALVM_HOME\lib\svm\builder\svm.jar
-          dir $env:GRAALVM_HOME\lib\svm\builder
-        if: runner.os == 'Windows'
-
       - name: Build with Gradle Wrapper (Windows)
-        run: |
-          echo JAVA_HOME: %JAVA_HOME%
-          .\gradlew.bat --no-daemon --info nativeCompile
+        run: .\gradlew.bat --no-daemon --info nativeCompile
         if: runner.os == 'Windows'
 

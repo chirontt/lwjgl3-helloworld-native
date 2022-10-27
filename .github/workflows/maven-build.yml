@@ -13,12 +13,12 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
-        graalvm-version: ['22.2.0']
+        graalvm-version: ['22.3.0']
       fail-fast: false
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up GraalVM for Java ${{ matrix.java-version }}
         uses: graalvm/setup-graalvm@v1
@@ -36,42 +36,27 @@ jobs:
         run: ./mvnw -V -B package
         if: runner.os != 'Windows'
 
-      - name: Fix the svm.jar of GraalVM ${{ matrix.graalvm-version }} for JDK ${{ matrix.java-version }} (Windows)
-        run: |
-          copy lib\svm-${{matrix.graalvm-version}}-${{matrix.java-version}}-MODIFIED.jar $env:GRAALVM_HOME\lib\svm\builder\svm.jar
-          dir $env:GRAALVM_HOME\lib\svm\builder
-        if: runner.os == 'Windows'
-
       - name: Build with Maven Wrapper (Windows)
         run: .\mvnw.cmd -V -B package
         if: runner.os == 'Windows'
 
-      - name: Compress the generated Windows native executable using UPX
-        if: runner.os == 'Windows'
-        uses: crazy-max/ghaction-upx@v2
-        with:
-          version: latest
-          files: |
-            target\native-image-windows\*.exe
-          args: --best
-
       - name: Package Linux artifact
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lwjgl3-helloworld ${{ runner.os }} native image with SubstrateVM Java ${{ matrix.java-version }}
           path: target/native-image-linux/lwjgl3-helloworld**
 
       - name: Package MacOS artifact
         if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lwjgl3-helloworld ${{ runner.os }} native image with SubstrateVM Java ${{ matrix.java-version }}
           path: target/native-image-macos/lwjgl3-helloworld*
 
       - name: Package Windows artifact
         if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lwjgl3-helloworld ${{ runner.os }} native image with SubstrateVM Java ${{ matrix.java-version }}
           path: target/native-image-windows/lwjgl3-helloworld.exe

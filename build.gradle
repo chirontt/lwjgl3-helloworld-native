@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.9.14'
+    id 'org.graalvm.buildtools.native' version '0.9.16'
     id 'com.google.osdetector' version '1.7.1'
 }
 
@@ -37,7 +37,7 @@ def getCurrentPlatform() {
 
 ext {
     lwjglVersion = '3.3.1'
-    graalvmVersion = '22.2.0'
+    graalvmVersion = '22.3.0'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']
@@ -64,7 +64,7 @@ dependencies {
     }
 
     //for compiling GraalVM substitution classes
-    compileOnly files("lib/svm-$graalvmVersion-11-MODIFIED.jar")
+    compileOnly "org.graalvm.sdk:graal-sdk:$graalvmVersion"
 }
 
 application {
