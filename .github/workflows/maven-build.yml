@@ -36,9 +36,24 @@ jobs:
         run: ./mvnw -V -B package
         if: runner.os != 'Windows'
 
+      - name: Fix the svm.jar of GraalVM ${{ matrix.graalvm-version }} for JDK ${{ matrix.java-version }} (Windows)
+        run: |
+          copy lib\svm-${{matrix.graalvm-version}}-${{matrix.java-version}}-MODIFIED.jar $env:GRAALVM_HOME\lib\svm\builder\svm.jar
+          dir $env:GRAALVM_HOME\lib\svm\builder
+        if: runner.os == 'Windows'
+
       - name: Build with Maven Wrapper (Windows)
         run: .\mvnw.cmd -V -B package
         if: runner.os == 'Windows'
+
+      - name: Compress the generated Windows native executable using UPX
+        if: runner.os == 'Windows'
+        uses: crazy-max/ghaction-upx@v2
+        with:
+          version: latest
+          files: |
+            target\native-image-windows\*.exe
+          args: --best
 
       - name: Package Linux artifact
         if: runner.os == 'Linux'

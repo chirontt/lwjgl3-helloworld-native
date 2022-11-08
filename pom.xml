@@ -11,7 +11,7 @@
         <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <lwjgl.version>3.3.1</lwjgl.version>
-        <native.maven.plugin.version>0.9.16</native.maven.plugin.version>
+        <native.maven.plugin.version>0.9.17</native.maven.plugin.version>
         <graalvm.version>22.3.0</graalvm.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
@@ -220,6 +220,9 @@
                     <!-- outputDir>${project.build.directory}/${native.image.dir.name}</outputDir -->
                     <imageName>${project.name}</imageName>
                     <mainClass>${exec.mainClass}</mainClass>
+                    <metadataRepository>
+                        <enabled>false</enabled>
+                    </metadataRepository>
                     <buildArgs>
                         <buildArg>--no-fallback</buildArg>
                         <buildArg>--initialize-at-run-time=org.lwjgl</buildArg>
