@@ -6,4 +6,5 @@
 .vscode
 bin
 build
+dependency-reduced-pom.xml
 target

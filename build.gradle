@@ -1,11 +1,11 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.9.17'
-    id 'com.google.osdetector' version '1.7.1'
+    id 'org.graalvm.buildtools.native' version '0.9.25'
+    id 'com.google.osdetector' version '1.7.3'
 }
 
 tasks.wrapper {
-    gradleVersion = '7.5.1'
+    gradleVersion = '8.3'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -36,8 +36,7 @@ def getCurrentPlatform() {
 }
 
 ext {
-    lwjglVersion = '3.3.1'
-    graalvmVersion = '22.3.0'
+    lwjglVersion = '3.3.3-SNAPSHOT'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']
@@ -49,6 +48,9 @@ ext {
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
     mavenLocal()
 }
 
@@ -62,9 +64,6 @@ dependencies {
         if (it != 'lwjgl-egl')  //lwjgl-egl has no native libraries
             runtimeOnly "org.lwjgl:$it::natives-$currentPlatform"
     }
-
-    //for compiling GraalVM substitution classes
-    compileOnly "org.graalvm.sdk:graal-sdk:$graalvmVersion"
 }
 
 application {
@@ -154,6 +153,7 @@ task removeUnneededDllFiles {
 }
 
 graalvmNative {
+    toolchainDetection = false
     binaries {
         main {
             imageName = project.name
@@ -164,6 +164,7 @@ graalvmNative {
 
             buildArgs.add('--initialize-at-run-time=org.lwjgl')
             buildArgs.add('--native-image-info')
+            //buildArgs.add('-march=native') //only available in GraalVM for JDK 17+
             buildArgs.add("-H:Path=$buildDir/$nativeImageDirName")
             buildArgs.add("-H:TempDirectory=$buildDir/tmp/$nativeImageDirName")
             //buildArgs.add('-H:+TraceNativeToolUsage')

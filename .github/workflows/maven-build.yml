@@ -13,18 +13,28 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
         java-version: [11, 17]
-        graalvm-version: ['22.3.0']
+        graalvm-version: ['22.3.3']
+        graalvm-distribution: ['graalvm-community']
       fail-fast: false
 
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
 
-      - name: Set up GraalVM for Java ${{ matrix.java-version }}
+      - name: Set up GraalVM ${{ matrix.graalvm-distribution }} for Java ${{ matrix.java-version }}
+        if: matrix.java-version == 17
         uses: graalvm/setup-graalvm@v1
         with:
-          version: ${{ matrix.graalvm-version }}
           java-version: ${{ matrix.java-version }}
+          distribution: ${{ matrix.graalvm-distribution }}
+          components: 'native-image'
+
+      - name: Set up GraalVM ${{ matrix.graalvm-version }} for Java ${{ matrix.java-version }}
+        if: matrix.java-version == 11
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+          version: ${{ matrix.graalvm-version }}
           components: 'native-image'
 
       - name: Report Java version
@@ -36,24 +46,9 @@ jobs:
         run: ./mvnw -V -B package
         if: runner.os != 'Windows'
 
-      - name: Fix the svm.jar of GraalVM ${{ matrix.graalvm-version }} for JDK ${{ matrix.java-version }} (Windows)
-        run: |
-          copy lib\svm-${{matrix.graalvm-version}}-${{matrix.java-version}}-MODIFIED.jar $env:GRAALVM_HOME\lib\svm\builder\svm.jar
-          dir $env:GRAALVM_HOME\lib\svm\builder
-        if: runner.os == 'Windows'
-
       - name: Build with Maven Wrapper (Windows)
         run: .\mvnw.cmd -V -B package
         if: runner.os == 'Windows'
-
-      - name: Compress the generated Windows native executable using UPX
-        if: runner.os == 'Windows'
-        uses: crazy-max/ghaction-upx@v2
-        with:
-          version: latest
-          files: |
-            target\native-image-windows\*.exe
-          args: --best
 
       - name: Package Linux artifact
         if: runner.os == 'Linux'

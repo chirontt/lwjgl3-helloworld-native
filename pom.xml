@@ -8,11 +8,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
-        <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
-        <lwjgl.version>3.3.1</lwjgl.version>
-        <native.maven.plugin.version>0.9.17</native.maven.plugin.version>
-        <graalvm.version>22.3.0</graalvm.version>
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
+        <lwjgl.version>3.3.3-SNAPSHOT</lwjgl.version>
+        <native.maven.plugin.version>0.9.25</native.maven.plugin.version>
         <native.image.dir.name>native-image-${platform}</native.image.dir.name>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
@@ -108,7 +107,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -132,7 +131,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <id>unpack</id>
@@ -228,6 +227,7 @@
                         <buildArg>--initialize-at-run-time=org.lwjgl</buildArg>
                         <buildArg>--native-image-info</buildArg>
                         <buildArg>--verbose</buildArg>
+                        <!-- buildArg>-march=native</buildArg --> <!-- only available in GraalVM for JDK 17+ -->
                         <!-- buildArg>-H:+TraceNativeToolUsage</buildArg -->
                         <buildArg>-H:TempDirectory=${project.build.directory}/tmp/${native.image.dir.name}</buildArg>
                         <buildArg>-H:Path=${project.build.directory}/${native.image.dir.name}</buildArg>
@@ -247,7 +247,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>remove-unneeded-dll-files</id>
@@ -286,6 +286,16 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <!-- get recommended dependency versions from the LWJGL BOM -->
@@ -299,13 +309,6 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <!-- for compiling GraalVM substitution classes -->
-        <dependency>
-            <groupId>org.graalvm.sdk</groupId>
-            <artifactId>graal-sdk</artifactId>
-            <version>${graalvm.version}</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- LWJGL modules used: minimal OpenGL -->
         <dependency>
             <groupId>org.lwjgl</groupId>
