@@ -12,8 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
-        java-version: [11, 17]
-        graalvm-version: ['22.3.3']
+        java-version: [17, 21]
         graalvm-distribution: ['graalvm-community']
       fail-fast: false
 
@@ -32,20 +31,10 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle-
 
       - name: Set up GraalVM ${{ matrix.graalvm-distribution }} for Java ${{ matrix.java-version }}
-        if: matrix.java-version == 17
         uses: graalvm/setup-graalvm@v1
         with:
           java-version: ${{ matrix.java-version }}
           distribution: ${{ matrix.graalvm-distribution }}
-          components: 'native-image'
-
-      - name: Set up GraalVM ${{ matrix.graalvm-version }} for Java ${{ matrix.java-version }}
-        if: matrix.java-version == 11
-        uses: graalvm/setup-graalvm@v1
-        with:
-          java-version: ${{ matrix.java-version }}
-          version: ${{ matrix.graalvm-version }}
-          components: 'native-image'
 
       - name: Report Java version
         run: |

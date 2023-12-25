@@ -1,11 +1,11 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.9.25'
+    id 'org.graalvm.buildtools.native' version '0.9.28'
     id 'com.google.osdetector' version '1.7.3'
 }
 
 tasks.wrapper {
-    gradleVersion = '8.3'
+    gradleVersion = '8.5'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -43,7 +43,6 @@ ext {
 
     mainClassName = 'com.github.chirontt.lwjgl.demo.HelloWorld'
     currentPlatform = getCurrentPlatform()
-    nativeImageDirName = "native-image-$currentPlatform"
 }
 
 repositories {
@@ -129,29 +128,6 @@ task uberJar(type: Jar) {
     duplicatesStrategy 'exclude'
 }
 
-//remove unneeded .dll/.txt files
-task removeUnneededDllFiles {
-    doLast {
-        if (file("$buildDir/$nativeImageDirName").exists()) {
-            ant.move(todir: "$buildDir/tmp/$nativeImageDirName") {
-                fileset(dir: "$buildDir/$nativeImageDirName") {
-                    include name: '*.dll'
-                    include name: '*.pdb'
-                    include name: '*.txt'
-                }
-            }
-        }
-        if (file("$buildDir/$nativeImageDirName/reports").exists()) {
-            ant.move(file: "$buildDir/$nativeImageDirName/reports",
-                     tofile: "$buildDir/tmp/$nativeImageDirName/reports")
-        }
-        if (file("$buildDir/$nativeImageDirName/sources").exists()) {
-            ant.move(file: "$buildDir/$nativeImageDirName/sources",
-                     tofile: "$buildDir/tmp/$nativeImageDirName/sources")
-        }
-    }
-}
-
 graalvmNative {
     toolchainDetection = false
     binaries {
@@ -164,9 +140,7 @@ graalvmNative {
 
             buildArgs.add('--initialize-at-run-time=org.lwjgl')
             buildArgs.add('--native-image-info')
-            //buildArgs.add('-march=native') //only available in GraalVM for JDK 17+
-            buildArgs.add("-H:Path=$buildDir/$nativeImageDirName")
-            buildArgs.add("-H:TempDirectory=$buildDir/tmp/$nativeImageDirName")
+            buildArgs.add('-march=compatibility') //only available in GraalVM for JDK 17+
             //buildArgs.add('-H:+TraceNativeToolUsage')
 
             useFatJar = false
@@ -181,6 +155,5 @@ tasks.named("nativeCompile") {
     //use the uber jar if long classpath becomes a problem in Windows:
     //dependsOn uberJar
     //classpathJar = uberJar.archiveFile
-    finalizedBy removeUnneededDllFiles
 }
 
