@@ -8,10 +8,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
-        <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
-        <lwjgl.version>3.3.3-SNAPSHOT</lwjgl.version>
-        <native.maven.plugin.version>0.9.28</native.maven.plugin.version>
+        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
+        <maven.shade.plugin.version>3.5.1</maven.shade.plugin.version>
+        <lwjgl.version>3.3.3</lwjgl.version>
+        <native.maven.plugin.version>0.10.0</native.maven.plugin.version>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
              can be specified on the command line with -Dsys.props="..."

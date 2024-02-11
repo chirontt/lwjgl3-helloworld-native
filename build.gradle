@@ -1,11 +1,11 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.9.28'
+    id 'org.graalvm.buildtools.native' version '0.10.0'
     id 'com.google.osdetector' version '1.7.3'
 }
 
 tasks.wrapper {
-    gradleVersion = '8.5'
+    gradleVersion = '8.6'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -36,7 +36,7 @@ def getCurrentPlatform() {
 }
 
 ext {
-    lwjglVersion = '3.3.3-SNAPSHOT'
+    lwjglVersion = '3.3.3'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']
