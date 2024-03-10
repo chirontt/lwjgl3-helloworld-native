@@ -44,26 +44,26 @@ The `nativeCompile` task would take a while to compile the demo source code and
 link them with the LWJGL libraries into a native executable file.
 The resulting `lwjgl3-helloworld` executable file is:
 
-	build/native-image-linux/lwjgl3-helloworld
+	build/native/nativeCompile/lwjgl3-helloworld
 
 (or if building on a Windows machine:
 
-	build\native-image-windows\lwjgl3-helloworld.exe
+	build\native\nativeCompile\lwjgl3-helloworld.exe
 
 )
 
 which can then be run directly:
 
-	./build/native-image-linux/lwjgl3-helloworld
+	./build/native/nativeCompile/lwjgl3-helloworld
 
 or, run it with relevant system properties to see some debug info in the console:
 
-	./build/native-image-linux/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
+	./build/native/nativeCompile/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
 
 (or if building on a Windows machine:
 
-	build\native-image-windows\lwjgl3-helloworld.exe
-	build\native-image-windows\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
+	build\native\nativeCompile\lwjgl3-helloworld.exe
+	build\native\nativeCompile\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
 
 )
 
@@ -93,26 +93,26 @@ The `package` task would take a while to compile the demo source code and
 link them with the LWJGL libraries into an executable file.
 The resulting `lwjgl3-helloworld` executable file is:
 
-	target/native-image-linux/lwjgl3-helloworld
+	target/lwjgl3-helloworld
 
 (or if building on a Windows machine:
 
-	target\native-image-windows\lwjgl3-helloworld.exe
+	target\lwjgl3-helloworld.exe
 
 )
 
 which can then be run directly:
 
-	./target/native-image-linux/lwjgl3-helloworld
+	./target/lwjgl3-helloworld
 
 or, run it with relevant system properties to see some debug info in the console:
 
-	./target/native-image-linux/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
+	./target/lwjgl3-helloworld -Dorg.lwjgl.util.Debug=true
 
 (or if building on a Windows machine:
 
-	target\native-image-windows\lwjgl3-helloworld.exe
-	target\native-image-windows\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
+	target\lwjgl3-helloworld.exe
+	target\lwjgl3-helloworld.exe -Dorg.lwjgl.util.Debug=true
 
 )
 

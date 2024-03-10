@@ -11,7 +11,7 @@
         <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
         <maven.shade.plugin.version>3.5.1</maven.shade.plugin.version>
         <lwjgl.version>3.3.3</lwjgl.version>
-        <native.maven.plugin.version>0.10.0</native.maven.plugin.version>
+        <native.maven.plugin.version>0.10.1</native.maven.plugin.version>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
              can be specified on the command line with -Dsys.props="..."
