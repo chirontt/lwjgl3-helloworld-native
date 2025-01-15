@@ -8,15 +8,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>11</maven.compiler.release>
-        <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
-        <maven.shade.plugin.version>3.5.1</maven.shade.plugin.version>
-        <lwjgl.version>3.3.3</lwjgl.version>
-        <native.maven.plugin.version>0.10.1</native.maven.plugin.version>
+        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
+        <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
+        <lwjgl.version>3.3.6</lwjgl.version>
+        <native.maven.plugin.version>0.10.4</native.maven.plugin.version>
         <exec.mainClass>com.github.chirontt.lwjgl.demo.HelloWorld</exec.mainClass>
         <!-- system properties for the application when run by exec:exec command;
              can be specified on the command line with -Dsys.props="..."
         -->
         <sys.props></sys.props>
+        <!-- GraalVM's agent to generate (or merge with) native-image configuration files -->
+        <!-- native.image.agent.prop>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image</native.image.agent.prop -->
+        <native.image.agent.prop></native.image.agent.prop>
     </properties>
     <name>lwjgl3-helloworld</name> <!-- name of the resulting native executable -->
     <description>LWJGL3 HelloWorld demo with native image by GraalVM</description>
@@ -106,7 +109,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -116,21 +119,16 @@
                 </executions>
                 <configuration>
                     <executable>java</executable>
-                    <arguments>
-                        <!-- GraalVM's agent to generate (or merge with) native-image configuration files -->
-                        <!-- argument>-agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image</argument -->
-                        <argument>${sys.props}</argument>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>${exec.mainClass}</argument>
-                    </arguments>
+                    <commandlineArgs>
+                        ${native.image.agent.prop} ${sys.props} -cp %classpath ${exec.mainClass}
+                    </commandlineArgs>
                 </configuration>
             </plugin>
             <!-- extract the LWJGL manifest file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.8.1</version>
                 <executions>
                     <execution>
                         <id>unpack</id>

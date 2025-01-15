@@ -1,11 +1,11 @@
 plugins {
     id 'application'
-    id 'org.graalvm.buildtools.native' version '0.10.1'
+    id 'org.graalvm.buildtools.native' version '0.10.4'
     id 'com.google.osdetector' version '1.7.3'
 }
 
 tasks.wrapper {
-    gradleVersion = '8.6'
+    gradleVersion = '8.12'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -36,7 +36,7 @@ def getCurrentPlatform() {
 }
 
 ext {
-    lwjglVersion = '3.3.3'
+    lwjglVersion = '3.3.6'
 
     //LWJGL modules used: minimal OpenGL
     lwjglModules = ['lwjgl', 'lwjgl-assimp', 'lwjgl-glfw', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-stb']
@@ -48,7 +48,7 @@ ext {
 repositories {
     mavenCentral()
     maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
+        url = "https://oss.sonatype.org/content/repositories/snapshots"
     }
     mavenLocal()
 }
@@ -125,7 +125,7 @@ task uberJar(type: Jar) {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-    duplicatesStrategy 'exclude'
+    duplicatesStrategy = 'exclude'
 }
 
 graalvmNative {
